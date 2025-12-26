@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<title>ငွေစာရင်းမှတ်စု</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+  font-family:sans-serif;
+  margin:0;
+  background:#f4f4f4;
+  padding-bottom:80px;
+}
+header{
+  background:#c66a00;
+  color:#fff;
+  padding:24px;
+  text-align:center;
+  font-size:22px;
+  font-weight:bold;
+}
+.card{
+  background:#fff;
+  margin:16px;
+  padding:22px;
+  border-radius:16px;
+  box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+.total{
+  font-size:34px;
+  font-weight:bold;
+}
+.in{color:green;}
+.out{color:red;}
+.bottom-nav{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  height:70px;
+  background:#fff;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  box-shadow:0 -4px 10px rgba(0,0,0,.12);
+}
+.bottom-nav a{
+  text-decoration:none;
+  color:#777;
+  text-align:center;
+}
+.bottom-nav a.active{
+  color:#c66a00;
+  font-weight:bold;
+}
+.bottom-nav span{display:block;font-size:20px;}
+</style>
+</head>
+<body>
+
+<header>ငွေစာရင်းမှတ်စု</header>
+
+<div class="card">
+  <h3>စုစုပေါင်းလက်ကျန်</h3>
+  <div class="total" id="total">0 ကျပ်</div>
+</div>
+
+<div class="card">
+  <div class="in">ဝင်ငွေ : <span id="income">0</span> ကျပ်</div>
+  <div class="out">ထွက်ငွေ : <span id="expense">0</span> ကျပ်</div>
+</div>
+
+<div class="bottom-nav">
+  <a href="index.html" class="active"><span>🏠</span>Dashboard</a>
+  <a href="add.html"><span>➕</span>ထည့်ရန်</a>
+  <a href="history.html"><span>📄</span>မှတ်တမ်း</a>
+</div>
+
+<script>
+let records = JSON.parse(localStorage.getItem("records")) || [];
+let income=0, expense=0;
+records.forEach(r=>{
+  if(r.type==="in") income+=r.amount;
+  else expense+=r.amount;
+});
+incomeEl=income; expenseEl=expense;
+document.getElementById("income").innerText=income;
+document.getElementById("expense").innerText=expense;
+document.getElementById("total").innerText=(income-expense)+" ကျပ်";
+</script>
+
+</body>
+</html>
