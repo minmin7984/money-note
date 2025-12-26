@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<title>မှတ်တမ်း</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{font-family:sans-serif;margin:0;background:#f4f4f4;padding-bottom:80px;}
+header{background:#c66a00;color:#fff;padding:22px;text-align:center;font-size:20px;}
+.card{
+  background:#fff;
+  margin:12px;
+  padding:16px;
+  border-radius:12px;
+}
+.in{color:green;} .out{color:red;}
+button{
+  padding:6px 10px;
+  margin-top:8px;
+  border:none;
+  border-radius:8px;
+  background:#c66a00;
+  color:#fff;
+}
+.del{background:#d93025;}
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  height:70px;background:#fff;
+  display:flex;justify-content:space-around;align-items:center;
+  box-shadow:0 -4px 10px rgba(0,0,0,.12);
+}
+.bottom-nav a{text-decoration:none;color:#777;text-align:center;}
+.bottom-nav a.active{color:#c66a00;font-weight:bold;}
+.bottom-nav span{display:block;font-size:20px;}
+</style>
+</head>
+<body>
+
+<header>မှတ်တမ်း</header>
+
+<div id="list"></div>
+
+<div class="bottom-nav">
+  <a href="index.html"><span>🏠</span>Dashboard</a>
+  <a href="add.html"><span>➕</span>ထည့်ရန်</a>
+  <a href="history.html" class="active"><span>📄</span>မှတ်တမ်း</a>
+</div>
+
+<script>
+let records = JSON.parse(localStorage.getItem("records")) || [];
+let list=document.getElementById("list");
+
+if(records.length===0){
+  list.innerHTML="<p style='padding:16px'>မှတ်တမ်းမရှိသေးပါ</p>";
+}
+
+records.forEach((r,i)=>{
+  list.innerHTML+=`
+  <div class="card">
+    <b>${r.category}</b><br>
+    <span class="${r.type}">
+      ${r.type==="in"?"ဝင်ငွေ":"ထွက်ငွေ"} - ${r.amount} ကျပ်
+    </span><br>
+    ${r.note||""}<br>
+    <small>${r.date}</small><br>
+    <button onclick="editRec(${i})">✏️ Edit</button>
+    <button class="del" onclick="delRec(${i})">🗑 Delete</button>
+  </div>`;
+});
+
+function delRec(i){
+  if(confirm("ဖျက်မလား?")){
+    records.splice(i,1);
+    localStorage.setItem("records",JSON.stringify(records));
+    location.reload();
+  }
+}
+function editRec(i){
+  location.href="add.html?edit="+i;
+}
+</script>
+
+</body>
+</html>
