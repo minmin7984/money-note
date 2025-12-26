@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<title>မှတ်တမ်းထည့်ရန်</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{font-family:sans-serif;margin:0;background:#f4f4f4;padding-bottom:80px;}
+header{background:#c66a00;color:#fff;padding:22px;text-align:center;font-size:20px;}
+form{
+  background:#fff;
+  margin:16px;
+  padding:20px;
+  border-radius:14px;
+}
+input,select,button{
+  width:100%;
+  padding:12px;
+  margin-top:12px;
+  font-size:16px;
+}
+button{
+  background:#c66a00;
+  color:#fff;
+  border:none;
+  border-radius:10px;
+}
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  height:70px;background:#fff;
+  display:flex;justify-content:space-around;align-items:center;
+  box-shadow:0 -4px 10px rgba(0,0,0,.12);
+}
+.bottom-nav a{text-decoration:none;color:#777;text-align:center;}
+.bottom-nav a.active{color:#c66a00;font-weight:bold;}
+.bottom-nav span{display:block;font-size:20px;}
+</style>
+</head>
+<body>
+
+<header>မှတ်တမ်းထည့်ရန်</header>
+
+<form onsubmit="saveRecord(event)">
+  <input type="hidden" id="editIndex">
+
+  <select id="type" required>
+    <option value="in">ဝင်ငွေ</option>
+    <option value="out">ထွက်ငွေ</option>
+  </select>
+
+  <select id="category" required>
+    <option value="">အမျိုးအစားရွေးပါ</option>
+    <option>အစားအစာ</option>
+    <option>အဝတ်အစား</option>
+    <option>အိမ်သုံး</option>
+    <option>လက်လီ</option>
+    <option>လက်ကား</option>
+    <option>ချေးငွေ (ပေး)</option>
+    <option>ချေးငွေ (ရ)</option>
+    <option>အခြား</option>
+  </select>
+
+  <input type="number" id="amount" placeholder="ငွေပမာဏ" required>
+  <input type="text" id="note" placeholder="မှတ်ချက်">
+  <button>သိမ်းမည်</button>
+</form>
+
+<div class="bottom-nav">
+  <a href="index.html"><span>🏠</span>Dashboard</a>
+  <a href="add.html" class="active"><span>➕</span>ထည့်ရန်</a>
+  <a href="history.html"><span>📄</span>မှတ်တမ်း</a>
+</div>
+
+<script>
+let records = JSON.parse(localStorage.getItem("records")) || [];
+
+function saveRecord(e){
+  e.preventDefault();
+  let index=document.getElementById("editIndex").value;
+  let data={
+    type:type.value,
+    category:category.value,
+    amount:Number(amount.value),
+    note:note.value,
+    date:new Date().toLocaleDateString()
+  };
+  if(index==="") records.push(data);
+  else records[index]=data;
+  localStorage.setItem("records",JSON.stringify(records));
+  alert("သိမ်းပြီးပါပြီ");
+  location.href="history.html";
+}
+
+const params=new URLSearchParams(location.search);
+const edit=params.get("edit");
+if(edit!==null){
+  let r=records[edit];
+  type.value=r.type;
+  category.value=r.category;
+  amount.value=r.amount;
+  note.value=r.note;
+  editIndex.value=edit;
+}
+</script>
+
+</body>
+</html>
